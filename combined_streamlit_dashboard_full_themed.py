@@ -388,7 +388,7 @@ def render_wwf_dashboard():
         fig.update_layout(height=430, xaxis_title=x, yaxis_title=y)
         if not horizontal:
             fig.update_xaxes(tickangle=20)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
 
     def plot_stacked_percent(df, x, y_cols, title):
@@ -409,7 +409,7 @@ def render_wwf_dashboard():
         fig.update_traces(texttemplate="%{text:.1f}", textposition="inside")
         fig.update_layout(height=470)
         fig.update_xaxes(tickangle=20)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
 
     def safe_percent(df, col_name):
@@ -810,7 +810,7 @@ def render_wwf_dashboard():
                 plot_bar(local_summary, "sentiment_label", "comment_count", "Overall Sentiment Distribution", text_col="percentage")
             with c2:
                 fig = px.pie(local_summary, values="comment_count", names="sentiment_label", title="Share of Overall Sentiment")
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
             fig = px.histogram(
                 df_sentiment,
@@ -819,12 +819,12 @@ def render_wwf_dashboard():
                 title="Distribution of Sentiment Compound Scores"
             )
             fig.update_layout(height=420)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
 
             st.markdown("#### Sample comments by sentiment")
             sample_label = st.selectbox("Choose sentiment sample", ["Positive", "Neutral", "Negative"], key="sample_sentiment")
             sample_df = df_sentiment[df_sentiment["sentiment_label"] == sample_label][["text_content", "sentiment_compound_score"]].head(25)
-            st.dataframe(sample_df, use_container_width=True)
+            st.dataframe(sample_df, width='stretch')
         else:
             st.warning("Sentiment source data is not available.")
 
@@ -844,7 +844,7 @@ def render_wwf_dashboard():
 
         if final_df is not None:
             st.markdown("#### Final category sentiment table")
-            st.dataframe(final_df, use_container_width=True)
+            st.dataframe(final_df, width='stretch')
 
         st.markdown("#### Pet-level category files")
         category_file_map = {
@@ -859,7 +859,7 @@ def render_wwf_dashboard():
         selected_cat = st.selectbox("Choose category detail", list(category_file_map.keys()))
         cat_df = load_csv(category_file_map[selected_cat])
         if cat_df is not None:
-            st.dataframe(cat_df, use_container_width=True)
+            st.dataframe(cat_df, width='stretch')
         else:
             st.info("Pet-level file for this category is not available.")
 
@@ -875,7 +875,7 @@ def render_wwf_dashboard():
         if gap is not None:
             y_cols = [c for c in gap.columns if c != "knowledge_gap_type"]
             plot_stacked_percent(gap, "knowledge_gap_type", y_cols, "Pet Category Distribution Within Each Knowledge Gap Type (%)")
-            st.dataframe(gap, use_container_width=True)
+            st.dataframe(gap, width='stretch')
         else:
             st.info("Knowledge gap summary is not available.")
 
@@ -890,7 +890,7 @@ def render_wwf_dashboard():
         overall_summary = load_csv("wwf_motivation_overall_summary.csv")
         plot_bar(overall_summary, "Type", "Count", "Motivation Classification (Full Dataset)", text_col="Percentage_of_full_dataset")
         if overall_summary is not None:
-            st.dataframe(overall_summary, use_container_width=True)
+            st.dataframe(overall_summary, width='stretch')
 
 
     # =========================================================
@@ -919,7 +919,7 @@ def render_wwf_dashboard():
                 st.info("Marketplace category breakdown is not available.")
 
         if summary is not None:
-            st.dataframe(summary, use_container_width=True)
+            st.dataframe(summary, width='stretch')
 
 
     # =========================================================
@@ -932,7 +932,7 @@ def render_wwf_dashboard():
         overall_summary = load_csv("wwf_welfare_overall_summary_final.csv")
         plot_bar(overall_summary, "Type", "Count", "Animal Welfare Classification (Full Dataset)", text_col="Percentage_of_full_dataset")
         if overall_summary is not None:
-            st.dataframe(overall_summary, use_container_width=True)
+            st.dataframe(overall_summary, width='stretch')
 
 
     # =========================================================
@@ -960,7 +960,7 @@ def render_wwf_dashboard():
                     "Percentage": [(strong_count / total) * 100, (concern_count / total) * 100]
                 })
                 plot_bar(summary_df, "Safety Theme", "Percentage", "Safety Themes in Exotic Pet Comments", text_col="Percentage")
-                st.dataframe(summary_df, use_container_width=True)
+                st.dataframe(summary_df, width='stretch')
         else:
             st.info("Safety files are not available.")
 
@@ -984,7 +984,7 @@ def render_wwf_dashboard():
 
         plot_bar(subtheme_summary, "Conservation Subtheme", "Count", "Types of Conservation Concerns", text_col="Percentage_within_conservation")
         if category_summary is not None:
-            st.dataframe(category_summary, use_container_width=True)
+            st.dataframe(category_summary, width='stretch')
 
 
     # =========================================================
@@ -1004,7 +1004,7 @@ def render_wwf_dashboard():
             plot_bar(pure_summary, "Type", "Count", "Legality Awareness vs Legal Risk", text_col="Percentage_within_legality")
 
         if pure_summary is not None:
-            st.dataframe(pure_summary, use_container_width=True)
+            st.dataframe(pure_summary, width='stretch')
 
 
     # =========================================================
@@ -1027,8 +1027,8 @@ def render_wwf_dashboard():
             )
             fig.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
             fig.update_layout(height=540, xaxis_tickangle=-35)
-            st.plotly_chart(fig, use_container_width=True)
-            st.dataframe(geo_df, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
+            st.dataframe(geo_df, width='stretch')
         else:
             st.info("Geographic source files are not fully available.")
 
@@ -1070,9 +1070,9 @@ def render_wwf_dashboard():
             theme_counts.columns = ["theme", "count"]
 
             fig = px.pie(theme_counts, values="count", names="theme", title="Rule-Based Theme Distribution")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
 
-            st.dataframe(work[["text_content", "theme"]].head(100), use_container_width=True)
+            st.dataframe(work[["text_content", "theme"]].head(100), width='stretch')
         else:
             st.info("Theme classification source text is not available.")
 
@@ -1292,7 +1292,7 @@ def render_uploaded_dashboard():
             color_discrete_map=SENTIMENT_COLOR_MAP,
             title="How much discourse is negative, neutral, or supportive?"
         )
-        st.plotly_chart(fig_sent, use_container_width=True)
+        st.plotly_chart(fig_sent, width='stretch')
     
         # Stance distribution (related but distinct)
         st.subheader("Stance Distribution")
@@ -1303,7 +1303,7 @@ def render_uploaded_dashboard():
             category_orders={"stance": ["Critical", "Neutral", "Supportive"]},
             title="Stance: Critical vs Neutral vs Supportive"
         )
-        st.plotly_chart(fig_stance, use_container_width=True)
+        st.plotly_chart(fig_stance, width='stretch')
     
         # Optional: sentiment by platform if available
         if "platform" in df.columns:
@@ -1314,7 +1314,7 @@ def render_uploaded_dashboard():
                 y="sentiment",
                 title="Platform Comparison (Sentiment Score Distribution)"
             )
-            st.plotly_chart(fig_platform, use_container_width=True)
+            st.plotly_chart(fig_platform, width='stretch')
 
     # ==================== RESEARCH QUESTION 2: THEMES & MOTIVATIONS ====================
     with tab_themes:
@@ -1357,10 +1357,10 @@ def render_uploaded_dashboard():
             title="Theme Prevalence with Risk Intensity",
             labels={"Mentions": "Number of posts", "Avg Risk Score": "Avg Conservation Risk"}
         )
-        st.plotly_chart(fig_theme, use_container_width=True)
+        st.plotly_chart(fig_theme, width='stretch')
     
         st.subheader("Multi-Level Theme Evidence")
-        st.dataframe(theme_df, use_container_width=True, hide_index=True)
+        st.dataframe(theme_df, width='stretch', hide_index=True)
     
         # Cross-theme overlap analysis
         st.subheader("Cross-Theme Overlap (Posts with Multiple Concerns)")
@@ -1383,7 +1383,7 @@ def render_uploaded_dashboard():
             title="Posts with Multiple Concurrent Themes (Higher complexity = riskier)",
             text="Percentage"
         )
-        st.plotly_chart(fig_overlap, use_container_width=True)
+        st.plotly_chart(fig_overlap, width='stretch')
     
         st.subheader("Theme Definitions")
         theme_defs = {
@@ -1440,10 +1440,10 @@ def render_uploaded_dashboard():
             title="Species Groups and Risk Profile",
             labels={"Post Count": "Posts mentioning group"}
         )
-        st.plotly_chart(fig_species, use_container_width=True)
+        st.plotly_chart(fig_species, width='stretch')
     
         st.subheader("Species Group Risk Details")
-        st.dataframe(species_risk_df, use_container_width=True, hide_index=True)
+        st.dataframe(species_risk_df, width='stretch', hide_index=True)
 
 
         # High-risk examples
@@ -1475,7 +1475,7 @@ def render_uploaded_dashboard():
                 color_discrete_map=SENTIMENT_COLOR_MAP,
                 title="Sentiment by Platform"
             )
-            st.plotly_chart(fig_plat_sent, use_container_width=True)
+            st.plotly_chart(fig_plat_sent, width='stretch')
         
             # Theme intensity by platform
             st.subheader("Theme Intensity by Platform")
@@ -1504,7 +1504,7 @@ def render_uploaded_dashboard():
                 barmode="group",
                 title="Theme Intensity by Platform"
             )
-            st.plotly_chart(fig_plat_theme, use_container_width=True)
+            st.plotly_chart(fig_plat_theme, width='stretch')
         
             # Theme-by-Platform Heatmap (relationship visualization)
             st.subheader("Theme-by-Platform Heatmap (Relationship Matrix)")
@@ -1515,7 +1515,7 @@ def render_uploaded_dashboard():
                 title="Which platforms emphasize which themes? (Darker = higher %)",
                 color_continuous_scale="RdYlGn_r"
             )
-            st.plotly_chart(fig_heatmap, use_container_width=True)
+            st.plotly_chart(fig_heatmap, width='stretch')
         
             # Platform statistics table
             st.subheader("Platform Summary Statistics")
@@ -1532,7 +1532,7 @@ def render_uploaded_dashboard():
                 })
         
             platform_stats_df = pd.DataFrame(platform_stats)
-            st.dataframe(platform_stats_df, use_container_width=True, hide_index=True)
+            st.dataframe(platform_stats_df, width='stretch', hide_index=True)
         else:
             st.info("Platform column not found in data. Upload data that includes platform information.")
 
@@ -1566,10 +1566,10 @@ def render_uploaded_dashboard():
                         y="Frequency",
                         title=f"Top Terms on {platform_selected}"
                     )
-                    st.plotly_chart(fig_terms, use_container_width=True)
+                    st.plotly_chart(fig_terms, width='stretch')
                 
                     st.subheader("Top Terms Table")
-                    st.dataframe(term_df.head(20), use_container_width=True, hide_index=True)
+                    st.dataframe(term_df.head(20), width='stretch', hide_index=True)
                 except Exception as e:
                     st.warning(f"Could not extract terms: {e}")
             else:
@@ -1597,10 +1597,10 @@ def render_uploaded_dashboard():
                         y="Frequency",
                         title=f"Top Terms in {stance_selected} Comments"
                     )
-                    st.plotly_chart(fig_terms, use_container_width=True)
+                    st.plotly_chart(fig_terms, width='stretch')
                 
                     st.subheader("Top Terms Table")
-                    st.dataframe(term_df.head(20), use_container_width=True, hide_index=True)
+                    st.dataframe(term_df.head(20), width='stretch', hide_index=True)
                 except Exception as e:
                     st.warning(f"Could not extract terms: {e}")
             else:
@@ -1653,7 +1653,7 @@ def render_uploaded_dashboard():
                 display_cols.append("source_url")
             display_cols.extend(["sentiment_label", "conservation_risk_label", "risk_type"])
         
-            st.dataframe(priority_posts[display_cols].head(50), use_container_width=True)
+            st.dataframe(priority_posts[display_cols].head(50), width='stretch')
         
             # Download high-priority posts
             st.download_button(
@@ -1661,7 +1661,7 @@ def render_uploaded_dashboard():
                 data=priority_posts.to_csv(index=False),
                 file_name="high_priority_posts_wwf.csv",
                 mime="text/csv",
-                use_container_width=True
+                width='stretch'
             )
         else:
             st.info("No high-priority posts found combining trade and risk signals.")
@@ -1702,7 +1702,7 @@ def render_uploaded_dashboard():
                     title="Legality Classification Across Full Dataset",
                 )
                 fig_legality_overall.update_traces(texttemplate="%{text}%", textposition="outside")
-                st.plotly_chart(fig_legality_overall, use_container_width=True)
+                st.plotly_chart(fig_legality_overall, width='stretch')
             else:
                 st.info("Legality overall summary is unavailable for this source or missing required columns.")
 
@@ -1716,7 +1716,7 @@ def render_uploaded_dashboard():
                     title="Legality Awareness vs Legal Risk",
                 )
                 fig_legality_pure.update_traces(texttemplate="%{text}%", textposition="outside")
-                st.plotly_chart(fig_legality_pure, use_container_width=True)
+                st.plotly_chart(fig_legality_pure, width='stretch')
             else:
                 st.info("Legality pure summary is unavailable for this source or missing required columns.")
 
@@ -1735,7 +1735,7 @@ def render_uploaded_dashboard():
                 data=legality_download.to_csv(index=False).encode("utf-8"),
                 file_name="detail_legality_chart_data.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
 
         # --------- Q1 sentiment charts ---------
@@ -1753,7 +1753,7 @@ def render_uploaded_dashboard():
                     category_orders={"sentiment_label": SENTIMENT_ORDER},
                     color_discrete_map=SENTIMENT_COLOR_MAP,
                 )
-                st.plotly_chart(fig_q1_bar, use_container_width=True)
+                st.plotly_chart(fig_q1_bar, width='stretch')
             with s2:
                 fig_q1_pie = px.pie(
                     q1_summary,
@@ -1763,13 +1763,13 @@ def render_uploaded_dashboard():
                     color="sentiment_label",
                     color_discrete_map=SENTIMENT_COLOR_MAP,
                 )
-                st.plotly_chart(fig_q1_pie, use_container_width=True)
+                st.plotly_chart(fig_q1_pie, width='stretch')
             st.download_button(
                 label="Download Q1 Sentiment Chart Data (CSV)",
                 data=q1_summary.to_csv(index=False).encode("utf-8"),
                 file_name="detail_q1_sentiment_chart_data.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
         else:
             st.info("Q1 sentiment summary is unavailable or missing required columns.")
@@ -1795,13 +1795,13 @@ def render_uploaded_dashboard():
                 color_discrete_map=SENTIMENT_COLOR_MAP,
                 title="Sentiment Distribution Across Exotic Pet Categories (%)",
             )
-            st.plotly_chart(fig_q2_stack, use_container_width=True)
+            st.plotly_chart(fig_q2_stack, width='stretch')
             st.download_button(
                 label="Download Q2 Category Chart Data (CSV)",
                 data=q2_melt.to_csv(index=False).encode("utf-8"),
                 file_name="detail_q2_category_chart_data.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
         else:
             st.info("Q2 category sentiment percent file is unavailable or missing required columns.")
@@ -1827,13 +1827,13 @@ def render_uploaded_dashboard():
                 barmode="stack",
                 title="Pet Category Distribution Within Each Knowledge Gap Type (%)",
             )
-            st.plotly_chart(fig_gap, use_container_width=True)
+            st.plotly_chart(fig_gap, width='stretch')
             st.download_button(
                 label="Download Knowledge Gap Chart Data (CSV)",
                 data=gap_melt.to_csv(index=False).encode("utf-8"),
                 file_name="detail_knowledge_gap_chart_data.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
         else:
             st.info("Knowledge gap percentages are available only for Final Data Visuals.")
@@ -1866,13 +1866,13 @@ def render_uploaded_dashboard():
             )
             if pct_col in topic_df.columns:
                 fig_topic.update_traces(texttemplate="%{text}%", textposition="outside")
-            st.plotly_chart(fig_topic, use_container_width=True)
+            st.plotly_chart(fig_topic, width='stretch')
             st.download_button(
                 label=f"Download {title} Chart Data (CSV)",
                 data=topic_df.to_csv(index=False).encode("utf-8"),
                 file_name=f"detail_{title.lower().replace(' ', '_')}_chart_data.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
 
     # ==================== TAB 7: EXPERIMENTAL & ADVANCED ANALYTICS ====================
@@ -1896,7 +1896,7 @@ def render_uploaded_dashboard():
                 ner_label = st.selectbox("Filter entity label", ner_label_options, key="ner_label_filter")
 
                 filtered_ner = ner_summary if ner_label == "All" else ner_summary[ner_summary["label"] == ner_label]
-                st.dataframe(filtered_ner.head(30), use_container_width=True)
+                st.dataframe(filtered_ner.head(30), width='stretch')
 
                 if not filtered_ner.empty:
                     fig_ner = px.bar(
@@ -1906,14 +1906,14 @@ def render_uploaded_dashboard():
                         color="label",
                         title="Top Wildlife Entities",
                     )
-                    st.plotly_chart(fig_ner, use_container_width=True)
+                    st.plotly_chart(fig_ner, width='stretch')
 
                 st.download_button(
                     label="Download entity summary CSV",
                     data=filtered_ner.to_csv(index=False).encode("utf-8"),
                     file_name="wildlife_entity_summary.csv",
                     mime="text/csv",
-                    use_container_width=True,
+                    width='stretch',
                 )
 
             st.subheader("Conservation-Risk Classifier Details")
@@ -1936,20 +1936,20 @@ def render_uploaded_dashboard():
                 category_orders={"risk_label": ["low", "medium", "high"]},
                 title="Conservation Risk Distribution",
             )
-            st.plotly_chart(fig_risk, use_container_width=True)
+            st.plotly_chart(fig_risk, width='stretch')
 
             st.download_button(
                 label="Download risk predictions CSV",
                 data=risk_df_detail.to_csv(index=False).encode("utf-8"),
                 file_name="conservation_risk_predictions.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
 
             high_risk_examples = risk_df_detail[risk_df_detail["risk_label"] == "high"].head(10)
             if not high_risk_examples.empty:
                 st.subheader("High-Risk Examples")
-                st.dataframe(high_risk_examples[["text", "risk_score", "matched_terms"]], use_container_width=True)
+                st.dataframe(high_risk_examples[["text", "risk_score", "matched_terms"]], width='stretch')
     
     
         elif exp_subtab == "Intervention Simulation":
@@ -2015,7 +2015,7 @@ def render_uploaded_dashboard():
                 category_orders={"label": ["Negative", "Neutral", "Positive"]},
                 title=f"Sentiment Impact: {comment_type} Intervention",
             )
-            st.plotly_chart(fig_cond, use_container_width=True)
+            st.plotly_chart(fig_cond, width='stretch')
 
             impact_col1, impact_col2 = st.columns(2)
             impact_col1.metric("Posts Exposed To This Message", int(exposure_mask.sum()))
@@ -2051,7 +2051,7 @@ def render_uploaded_dashboard():
                 )
 
             st.write("**Data preview:**")
-            st.dataframe(df_exp.head(10), use_container_width=True)
+            st.dataframe(df_exp.head(10), width='stretch')
 
             st.subheader("Mixed ANOVA Results")
             required_mixed = {"participant", "condition", "time", "attitude"}
@@ -2066,7 +2066,7 @@ def render_uploaded_dashboard():
                             data=df_exp,
                         )
                         st.write("**Attitude ANOVA Results**")
-                        st.dataframe(aov, use_container_width=True)
+                        st.dataframe(aov, width='stretch')
                     except Exception as e:
                         st.error(f"ANOVA error: {e}")
                 else:
@@ -2080,7 +2080,7 @@ def render_uploaded_dashboard():
                 try:
                     aov2 = pg.anova(dv="civic_action", between="condition", data=df_exp)
                     st.write("**Civic Action ANOVA Results**")
-                    st.dataframe(aov2, use_container_width=True)
+                    st.dataframe(aov2, width='stretch')
                 except Exception as e:
                     st.error(f"ANOVA error: {e}")
 
