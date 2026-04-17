@@ -90,13 +90,33 @@ See [requirements.txt](requirements.txt) for the complete dependency list.
 
 ## Usage
 
-### Running the Dashboard
+### Accessing the Live Dashboard
+
+The dashboard is hosted and available online:
+- **Live URL**: https://wwf-exotic-pet-dashboard.streamlit.app/
+- **QR Code**: Scan the QR code below to access the dashboard on your mobile device
+
+![Dashboard QR Code](dashboard_qr_code.png)
+
+Simply point your smartphone camera at the QR code or use any QR code scanner app to open the dashboard instantly.
+
+### Running the Dashboard Locally
 
 ```bash
 streamlit run combined_streamlit_dashboard_full_themed.py
 ```
 
 The application will start on `http://localhost:8501` by default.
+
+### Generating QR Code
+
+To regenerate the QR code (e.g., if the dashboard URL changes):
+
+```bash
+python generate_qr_code.py
+```
+
+This will create a new `dashboard_qr_code.png` file with the updated URL. The script uses the `qrcode` and `pillow` libraries, which are included in the requirements.
 
 ### Using the Dashboard
 
